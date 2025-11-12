@@ -97,7 +97,6 @@ const form = reactive({
 
 const login = async () => {
 
-    console.log("werwerwe")
     loading.value = true
 
     const { success, data } = await request(

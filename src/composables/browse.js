@@ -20,52 +20,11 @@ export default function useBrowse({ url = '', limit }) {
 
         try {
 
-            if(limit) {
-
-                params = {
-                    ...params,
-                    limit
-                }
-
-                const response = await http.get(url, {
-                    params: params
-                })
-    
-                const {
-                    items: _items,
-                    pagination: _pagination
-                } = response.data
-        
-                pagination.value = _pagination
-    
-                items.value = _items.map(e => {
-                    e.created_at = e.created_at ? DateTime.fromISO(e.created_at).setZone('America/Bogota') : null
-                    e.updated_at = e.updated_at ? DateTime.fromISO(e.updated_at).setZone('America/Bogota') : null
-                    return e
-                })
-    
-                loading.value = false
-    
-                return {
-                    status: response.status,
-                    data: {
-                        items: _items,
-                        pagination: _pagination
-                    },
-                    success: true
-                }
-
-            }
-
             const response = await http.get(url, {
                 params: params
             })
 
-            items.value = response.data.map(e => {
-                e.created_at = e.created_at ? DateTime.fromISO(e.created_at).setZone('America/Bogota') : null
-                e.updated_at = e.updated_at ? DateTime.fromISO(e.updated_at).setZone('America/Bogota') : null
-                return e
-            })
+            items.value = response.data
 
             return {
                 status: response.status,

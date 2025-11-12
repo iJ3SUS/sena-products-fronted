@@ -1,7 +1,7 @@
 <template>
     <Update
         browse_route="products.index"
-        resource_url="dashboard/products"
+        resource_url="products"
         :schema="schema"
     >
         <template #actions></template>
