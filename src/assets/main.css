@@ -1,0 +1,220 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --font-poppins: poppins;
+  --color-primary-50: #f3f6fc;
+  --color-primary-100: #e5ecf9;
+  --color-primary-200: #c6d6f1;
+  --color-primary-300: #93b4e6;
+  --color-primary-400: #598dd7;
+  --color-primary-500: #3470c3;
+  --color-primary-600: #2455a3;
+  --color-primary-700: #1f4585;
+  --color-primary-800: #1d3c6f;
+  --color-primary-900: #1d335d;
+  --color-primary-950: #13213e;
+  
+  --color-danger-50: #fef2f2;
+  --color-danger-100: #fee2e2;
+  --color-danger-200: #fecaca;
+  --color-danger-300: #fca5a5;
+  --color-danger-400: #f87171;
+  --color-danger-500: #ef4444;
+  --color-danger-600: #dc2626;
+  --color-danger-700: #b91c1c;
+  --color-danger-800: #991b1b;
+  --color-danger-900: #7f1d1d;
+  --color-danger-950: #450a0a;
+}
+
+::-webkit-scrollbar {
+  width: 6px; /* Ancho de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #CBD5E0; /* Color del pulgar de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #EDF2F7; /* Color del riel de la barra de desplazamiento */
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+/* Tooltip */
+:root {
+  --gray: #000;
+}
+
+/* [tooltip] styles */
+[tooltip] > * {
+  display: inline-block;
+}
+
+[tooltip] {
+  position: relative;
+}
+
+[tooltip]:before,
+[tooltip]:after {
+  text-transform: none;
+  font-size: 0.9em;
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+  position: absolute;
+  display: none;
+  opacity: 0;
+  z-index: 999999; /* Solo agregar un z-index muy alto */
+}
+
+[tooltip]:before {
+  content: "";
+  border: 5px solid transparent;
+  z-index: 10000;
+}
+
+[tooltip]:after {
+  content: attr(tooltip);
+  text-align: center;
+  min-width: 3em;
+  max-width: 30em;
+  white-space: nowrap;
+  overflow: visible; /* Cambiado de hidden a visible */
+  text-overflow: ellipsis;
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+  box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+  background: var(--gray);
+  color: #fff;
+  z-index: 9999;
+  transform-style: preserve-3d; /* Ayuda con el z-index */
+}
+
+/* Forzar que el contenedor del tooltip no corte el contenido */
+[tooltip] {
+  position: relative;
+  overflow: visible !important; /* Fuerza que el tooltip sea visible */
+}
+
+[tooltip]:hover:before,
+[tooltip]:hover:after {
+  display: block;
+  overflow: visible !important;
+}
+
+/* Position: TOP */
+[tooltip]:not([position]):before,
+[tooltip][position^="top"]:before {
+  bottom: 100%;
+  border-bottom-width: 0;
+  border-top-color: var(--gray);
+}
+
+[tooltip]:not([position]):after,
+[tooltip][position^="top"]::after {
+  bottom: calc(100% + 5px);
+}
+
+[tooltip]:not([position])::before,
+[tooltip]:not([position])::after,
+[tooltip][position^="top"]::before,
+[tooltip][position^="top"]::after {
+  left: 50%;
+  transform: translate(-50%, -0.5em);
+}
+
+/* Position: BOTTOM */
+[tooltip][position^="bottom"]::before {
+  top: 105%;
+  border-top-width: 0;
+  border-bottom-color: var(--gray);
+}
+
+[tooltip][position^="bottom"]::after {
+  top: calc(105% + 5px);
+}
+
+[tooltip][position^="bottom"]::before,
+[tooltip][position^="bottom"]::after {
+  left: 50%;
+  transform: translate(-50%, 0.5em);
+}
+
+/* Position: LEFT */
+[tooltip][position^="left"]::before {
+  top: 50%;
+  border-right-width: 0;
+  border-left-color: var(--gray);
+  left: calc(0em - 5px);
+  transform: translate(-0.5em, -50%);
+}
+
+[tooltip][position^="left"]::after {
+  top: 50%;
+  right: calc(100% + 5px);
+  transform: translate(-0.5em, -50%);
+}
+
+/* Position: RIGHT */
+[tooltip][position^="right"]::before {
+  top: 50%;
+  border-left-width: 0;
+  border-right-color: var(--gray);
+  right: calc(0em - 5px);
+  transform: translate(0.5em, -50%);
+}
+
+[tooltip][position^="right"]::after {
+  top: 50%;
+  left: calc(100% + 5px);
+  transform: translate(0.5em, -50%);
+}
+
+/* FX All The Things */
+[tooltip]:not([position]):hover:before,
+[tooltip]:not([position]):hover:after,
+[tooltip][position^="top"]:hover:before,
+[tooltip][position^="top"]:hover:after,
+[tooltip][position^="bottom"]:hover:before,
+[tooltip][position^="bottom"]:hover:after {
+  animation: tooltips-vert 300ms ease-out forwards;
+}
+
+[tooltip][position^="left"]:hover:before,
+[tooltip][position^="left"]:hover:after,
+[tooltip][position^="right"]:hover:before,
+[tooltip][position^="right"]:hover:after {
+  animation: tooltips-horz 300ms ease-out forwards;
+}
+
+/* Don't show empty tooltips */
+[tooltip=""]::before,
+[tooltip=""]::after {
+  display: none !important;
+}
+
+/* Keyframes */
+@keyframes tooltips-vert {
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes tooltips-horz {
+  to {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+}
