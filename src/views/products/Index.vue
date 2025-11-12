@@ -117,7 +117,7 @@ const search = () => {
         return
     }
 
-    items.value = fuse.search(query.search).map(e => e.item).sort((a, b) => b.result.overdue - a.result.overdue)
+    items.value = fuse.search(query.search).map(e => e.item)
 
 }
 
