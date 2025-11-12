@@ -9,6 +9,9 @@ Frontend para el sistema de gestión de productos desarrollado con Vue.js
 `https://github.com/iJ3SUS/sena-products-api`
 
 **Nota:** Si ya clonaron el repositorio del backend anteriormente, por favor bajen los últimos cambios del mismo, ya que se hicieron ajustes importantes.
+```bash
+git pull origin main
+```
 
 ## Instalación
 

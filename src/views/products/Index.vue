@@ -12,7 +12,18 @@
         </template>
        
         <Table>
-            <template #top></template>
+            <template #top>
+                <div class="p-4">
+                    <Text 
+                        v-model="query.search"
+                        label="Buscar"
+                        placeholder="Buscar por nombre, descripción"
+                        size="h-10"
+                        @input="search"
+                    />
+                </div>
+
+            </template>
             
             <template #head>
                 <Row>
@@ -47,7 +58,7 @@
                         {{ FormatNumber(product.price) }}
                     </Column>
                     <Column class="w-24">
-                        <div class="flex justify-center">
+                        <div class="flex justify-center gap-2">
                             <RouterLink :to="{
                                 name: 'products.edit',
                                 params: { _id: product.id }
@@ -56,6 +67,11 @@
                                     <Icon icon="Pencil" width="18" height="18" />
                                 </Button>
                             </RouterLink>
+
+                            <Button theme="icon" color="gray-100" @click="() => remove(product)">
+                                <Icon icon="Trash" width="18" height="18" />
+                            </Button>
+
                         </div>
                     </Column>
                 </Row>
@@ -75,10 +91,35 @@
     </Page>
 </template>
 <script setup>
+import Swal from 'sweetalert2'
+import Fuse from 'fuse.js'
 
 import usePagination from "@/composables/pagination"
 
+const fuse = new Fuse([], {
+    includeScore: false,
+    threshold: 0.25,
+    keys: ['name', 'description']
+})
+
 const { items, backup, current_items, pagination, pages } = usePagination()
+
+const query = reactive({
+    search: ''
+})
+
+const search = () => {
+
+    pagination.current = 1
+    
+    if(query.search == '') {
+        items.value = backup.value
+        return
+    }
+
+    items.value = fuse.search(query.search).map(e => e.item).sort((a, b) => b.result.overdue - a.result.overdue)
+
+}
 
 const browse = async () => {
 
@@ -89,6 +130,38 @@ const browse = async () => {
     if(!success) return 
 
     items.value = data
+    backup.value = data
+
+    fuse.setCollection(items.value)
+}
+
+const remove = async (product) => {
+
+    const { isConfirmed } = await Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'No podrás revertir esto',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminarlo'
+    })
+
+    if(!isConfirmed) return
+        
+    const { success } = await request(
+        () => http.delete(`products/${product.id}`)
+    )
+
+    if(!success) return
+
+    Swal.fire({
+        title: 'Eliminado',
+        text: 'El producto ha sido eliminado',
+        icon: 'success'
+    })
+
+    browse()
 
 }
 
